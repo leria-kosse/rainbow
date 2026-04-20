@@ -5,3 +5,9 @@ package edu.ttap.graphs;
  * and weight of the edge between them.
  */
 public record GraphEntry(String src, String dest, int weight) { }
+
+
+
+/**
+ * OSCAR DO THIS!
+ */

@@ -88,3 +88,27 @@ public class RainbowTable {
         return Optional.empty();
     }
 }
+
+
+while (true) {
+                    
+                    Hash nextHash = hash.apply(currentPassword);
+
+                    //so og hash h?
+                    if(nextHash.equals(h)) {
+                        return Optional.of(currentPassword);
+                    }
+
+                    // its not
+
+                    currentPassword = reducer.apply(nextHash);
+                }
+
+            }
+            // not an endpoint
+
+            currentHash = hash.apply(pass);
+        }
+        // maxStep withouth finding
+        return Optional.empty();
+    }
