@@ -5,7 +5,3 @@ package edu.ttap.rainbowtable;
  */
 public record Hash(String value) { }
 
-
-/**
- * OSCAR DO THIS!
- */

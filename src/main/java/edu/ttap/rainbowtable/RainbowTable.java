@@ -40,7 +40,7 @@ public class RainbowTable {
 
         // TODO: implement me!
         // save the hash and reducer
-        this.hash = hash; 
+        this.hash = hasher; 
         this.reducer = reducer;
 
         // build end->start lookup map
