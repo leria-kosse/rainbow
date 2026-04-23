@@ -62,6 +62,11 @@ public class Graph {
         return nodes.contains(n);
     }
 
+
+    public Set<String> getNodes(){
+        return nodes;
+    }
+
     /**
      * @param src the source node
      * @param dst the destination node
