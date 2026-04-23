@@ -64,7 +64,7 @@ public class Main {
             // pick a start node
             String start = g.getNodes().iterator().next();
 
-            List<String> reachable = g.collectDepthFirst(start);
+            List<String> reachable = g.collectBreadthFirst(start);
 
             List<String> unreachable = new ArrayList<>();
 
@@ -75,7 +75,7 @@ public class Main {
                 }
             }
 
-            System.out.println("Graph " + i + ": " + unreachable);
+            System.out.println("Graph " + i + ": " + reachable);
             i++;
         }
 
