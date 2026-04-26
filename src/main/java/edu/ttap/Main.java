@@ -3,8 +3,11 @@ package edu.ttap;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import edu.ttap.graphs.Edge;
 import edu.ttap.graphs.Graph;
 import edu.ttap.graphs.GraphEntry;
 
@@ -32,8 +35,21 @@ public class Main {
             graphs.add(loadGraph(file));
         }
 
-        findAlwaysUnreachable(graphs);
-        // findFullyConnectedConfig(graphs);
+        //findAlwaysUnreachable(graphs);
+        Graph d = graphs.get(3);
+        List<Edge> mst = d.deriveMST("Noyce");
+
+        int totalCost = 0;
+        for (Edge e : mst) {
+            int w = d.getWeight(e.src(), e.dest()).get();
+            totalCost += w;
+        }
+        System.out.println("Total MST cost: " + totalCost);
+
+        // Print all edges to trace path to Salton
+        for (Edge e : mst) {
+            System.out.println(e.src() + " -> " + e.dest());
+        }
     }
 
     public static Graph loadGraph(String filename) throws Exception {
@@ -54,33 +70,51 @@ public class Main {
         return new Graph(entries);
     }
 
-    public static void findAlwaysUnreachable(List<Graph> graphs) {
+    public static Set<String> loadNames(String filename) throws Exception {
 
-        List<String> allUnreachable = new ArrayList<>();
+        List<String> lines = Files.readAllLines(Path.of(filename));
+        Set<String> names = new HashSet<>();
+
+        for (String line : lines) {
+            line = line.trim();
+
+            if (!line.isEmpty()) {
+                names.add(line);
+            }
+        }
+
+        return names;
+    }
+
+    public static void findAlwaysUnreachable(List<Graph> graphs) throws Exception {
+
+        Set<String> allMachines = loadNames("data/mathlanlist.txt");
+
+        Set<String> alwaysUnreachable = new HashSet<>(allMachines);
+
         int i = 1;
 
         for (Graph g : graphs) {
 
-            // pick a start node
             String start = g.getNodes().iterator().next();
 
             List<String> reachable = g.collectBreadthFirst(start);
 
-            List<String> unreachable = new ArrayList<>();
+            Set<String> unreachable = new HashSet<>(allMachines);
+            unreachable.removeAll(reachable);
 
-            for (String node : g.getNodes()) {
-                if (!reachable.contains(node)) {
-                    unreachable.add(node);
-                    allUnreachable.add(node);
-                }
+            alwaysUnreachable.retainAll(unreachable);
+
+            System.out.println("Graph " + i + " unreachable: " + unreachable);
+
+            if (reachable.containsAll(allMachines)) {
+                System.out.println("Graph " + i + " is fully connected!");
             }
 
-            System.out.println("Graph " + i + ": " + reachable);
             i++;
         }
 
-        System.out.println("ALL: " + allUnreachable);
+        System.out.println("Always unreachable: " + alwaysUnreachable);
     }
 
-    
 }
