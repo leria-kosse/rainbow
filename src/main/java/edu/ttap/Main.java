@@ -35,7 +35,7 @@ public class Main {
             graphs.add(loadGraph(file));
         }
 
-        //findAlwaysUnreachable(graphs);
+        // findAlwaysUnreachable(graphs);
         Graph d = graphs.get(3);
         List<Edge> mst = d.deriveMST("Noyce");
 
@@ -52,6 +52,13 @@ public class Main {
         }
     }
 
+    /**
+     * Loads a weighted graph from a .data file.
+     *
+     * @param filename the path to the data file to load
+     * @return a Graph constructed from the entries in the file
+     * @throws Exception if the file cannot be read or parsed
+     */
     public static Graph loadGraph(String filename) throws Exception {
         List<String> lines = Files.readAllLines(Path.of(filename));
         List<GraphEntry> entries = new ArrayList<>();
@@ -70,6 +77,13 @@ public class Main {
         return new Graph(entries);
     }
 
+    /**
+     * Loads a set of machine names from a plain text file.
+     *
+     * @param filename the path to the text file containing machine names
+     * @return a Set of machine name strings
+     * @throws Exception if the file cannot be read
+     */
     public static Set<String> loadNames(String filename) throws Exception {
 
         List<String> lines = Files.readAllLines(Path.of(filename));
@@ -86,6 +100,13 @@ public class Main {
         return names;
     }
 
+    /**
+     * Identifies machines that are unreachable in every network configuration,
+     * and identifies which configurations are fully connected.
+     * 
+     * @param graphs a list of graphs representing different networks
+     * @throws Exception if the machine names file cannot be read
+     */
     public static void findAlwaysUnreachable(List<Graph> graphs) throws Exception {
 
         Set<String> allMachines = loadNames("data/mathlanlist.txt");
